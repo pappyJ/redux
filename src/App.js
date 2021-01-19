@@ -1,10 +1,12 @@
-import React, { useReducer } from "react";
+import React from "react";
 
 import { connect } from "react-redux";
 
 import { CardList } from "./components/card-list/card-list.component";
 
 import { SearchBox } from "./components/search-box/search-box.component";
+
+import FileHandler from "./firebase/fileHandler";
 
 // import AppReducer from "./data/AppReducer";
 
@@ -28,6 +30,11 @@ const App = (currentState) => {
   //   state.monsters.filter((monster) =>
   //     monster.name.toLowerCase().includes(globalState.searchField || "")
   //   ))();
+
+  const uploadDispatcher = FileHandler();
+
+  const { getInputFile, uploadFile, imageUrl } = uploadDispatcher;
+
   return (
     // <GlobalProvider>
     <div className="App">
@@ -37,6 +44,14 @@ const App = (currentState) => {
         inputAction={(e) => currentState.setCurrentUser(e.target.value)}
       />
       <CardList monsters={currentState}></CardList>
+
+      <div>
+        <form onSubmit={uploadFile}>
+          <input type="file" onChange={getInputFile}></input>
+          <input type="submit"></input>
+        </form>
+        <img src={imageUrl} alt="user"></img>
+      </div>
     </div>
     // {/* </GlobalProvider> */}
   );
